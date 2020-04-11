@@ -6,6 +6,7 @@ const closeMovieModal = document.querySelector('.close');
 //Adding movie into the list
 const addMovieToList = document.querySelector('#add-movie');
 const movieList = document.querySelector('.movie-system__movie-list');
+const selectGenre = document.querySelector('#movie-genre');
 
 //Add movie into the list
 const addMovie = () => {
@@ -25,19 +26,29 @@ const addMovie = () => {
     //Movie title
     const newMovieTitle = document.createElement('h2');
     newMovieTitle.textContent = document.querySelector('#movie-name').value;
+    document.querySelector('#movie-name').value = '';
 
     //Movie genre
     const newMovieGenre = document.createElement('div');
     newMovieGenre.classList = 'movie-genre';
     newMovieGenre.textContent = document.querySelector('#movie-genre').value;
+    document.querySelector('#movie-genre').value = 'None';
+
+    //Movie rating
+    const newMovieRating = document.createElement('div');
+    newMovieRating.className = 'movie-rating';
+    newMovieRating.innerHTML = changeMovieRating();
+    document.querySelector('#movie-rating').value = 'None';
 
     //Movie description
     const newMovieDescription = document.createElement('p');
     newMovieDescription.textContent = document.querySelector('#movie-description').value;
+    document.querySelector('#movie-description').value = '';
     
     //Append the description information inside the container
     newMovieDescriptionContainer.appendChild(newMovieTitle);
     newMovieDescriptionContainer.appendChild(newMovieGenre);
+    newMovieDescriptionContainer.appendChild(newMovieRating);
     newMovieDescriptionContainer.appendChild(newMovieDescription);
 
     //Append the container
@@ -61,14 +72,25 @@ const changeMovieLogo = () => {
         case 'Horror':
             return '<i class="fas fa-ghost fa-7x"></i>';
         case 'Romance':
-            return '<i class="fas fa-heart fa-7x"></i>'
+            return '<i class="fas fa-heart fa-7x"></i>';
+        default:
+            return '';
     }
 }
 
-addMovieToList.addEventListener('click', e => {
-    addMovie();
-    movieModal.style.display = 'none';
-})
+//Change the movie ratings
+const changeMovieRating = () => {
+    const rating = document.querySelector('#movie-rating').value;
+    const remainingStar = 5 - rating;
+    let starRatings = '';
+    for(let i = 0; i < rating; i++) {
+        starRatings += '<i class="fas fa-star" style="margin-right: 4px"></i>';
+    }
+    for(let i = 0; i < remainingStar; i++) {
+        starRatings += '<i class="far fa-star" style="margin-right: 4px"></i>';
+    }
+    return starRatings;
+}
 
 //Navigation bar setting to active whenever clicked
 navigationBar.forEach(navigation => {
@@ -82,12 +104,24 @@ navigationBar.forEach(navigation => {
 //For opening of modal box
 addMovieButton.addEventListener('click', () => {
     movieModal.style.display = 'block';
-})
+});
 
 //When closing of modal box through x icon
 closeMovieModal.addEventListener('click', () => {
     movieModal.style.display = 'none';
-})
+});
+
+//Add movie modal submit button
+addMovieToList.addEventListener('click', e => {
+    addMovie();
+    movieModal.style.display = 'none';
+});
+
+//Selecting genre and changing its logo in modal 
+selectGenre.addEventListener('change', e => {
+    const genreLogo = document.querySelector('.add-movie__genre-image');
+    genreLogo.innerHTML = changeMovieLogo();
+});
 
 //Whenever the user clicks outside the modal
 window.addEventListener('click', e => {
