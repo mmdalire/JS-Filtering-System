@@ -3,19 +3,70 @@ const addMovieButton = document.querySelector('.movie-list__add-movie');
 const movieModal = document.querySelector('.movie__modal-box');
 const closeMovieModal = document.querySelector('.close');
 
-//test
+//Adding movie into the list
 const addMovieToList = document.querySelector('#add-movie');
 const movieList = document.querySelector('.movie-system__movie-list');
 
-addMovieToList.addEventListener('click', e => {
-    const movieName = document.querySelector('#movie-name');
+//Add movie into the list
+const addMovie = () => {
+    //Create a new item
     const newMovieItem = document.createElement('div');
     newMovieItem.className = 'movie-list__movie-item';
-    newMovieItem.textContent = movieName.value;
+
+    //Place of logo
+    const newMovieLogo = document.createElement('div');
+    newMovieLogo.className = 'movie-logo';
+    newMovieLogo.innerHTML = changeMovieLogo();
+    
+    //Place of movie description container
+    const newMovieDescriptionContainer = document.createElement('div');
+    newMovieDescriptionContainer.className = 'movie-description';
+
+    //Movie title
+    const newMovieTitle = document.createElement('h2');
+    newMovieTitle.textContent = document.querySelector('#movie-name').value;
+
+    //Movie genre
+    const newMovieGenre = document.createElement('div');
+    newMovieGenre.classList = 'movie-genre';
+    newMovieGenre.textContent = document.querySelector('#movie-genre').value;
+
+    //Movie description
+    const newMovieDescription = document.createElement('p');
+    newMovieDescription.textContent = document.querySelector('#movie-description').value;
+    
+    //Append the description information inside the container
+    newMovieDescriptionContainer.appendChild(newMovieTitle);
+    newMovieDescriptionContainer.appendChild(newMovieGenre);
+    newMovieDescriptionContainer.appendChild(newMovieDescription);
+
+    //Append the container
+    newMovieItem.appendChild(newMovieLogo);
+    newMovieItem.appendChild(newMovieDescriptionContainer)
+
+    //Add the movie list into the container
     movieList.appendChild(newMovieItem);
-    console.log(newMovieItem);
+}
 
+//Change the logo of movie according to genre
+const changeMovieLogo = () => {
+    const genreLogo = document.querySelector('#movie-genre').value;
+    switch(genreLogo) {
+        case 'Action':
+            return '<i class="fas fa-fighter-jet fa-7x"></i>';
+        case 'Comedy':
+            return '<i class="far fa-laugh fa-7x"></i>';
+        case 'Drama':
+            return '<i class="fas fa-theater-masks fa-7x"></i>';
+        case 'Horror':
+            return '<i class="fas fa-ghost fa-7x"></i>';
+        case 'Romance':
+            return '<i class="fas fa-heart fa-7x"></i>'
+    }
+}
 
+addMovieToList.addEventListener('click', e => {
+    addMovie();
     movieModal.style.display = 'none';
 })
 
