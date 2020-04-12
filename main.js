@@ -14,37 +14,39 @@ const addMovie = () => {
     const newMovieItem = document.createElement('div');
     newMovieItem.className = 'movie-list__movie-item';
 
+    //Place of movie description container
+    const newMovieDescriptionContainer = document.createElement('div');
+    newMovieDescriptionContainer.className = 'movie-description';
+
     //Place of logo
     const newMovieLogo = document.createElement('div');
     newMovieLogo.className = 'movie-logo';
     newMovieLogo.innerHTML = changeMovieLogo();
     
-    //Place of movie description container
-    const newMovieDescriptionContainer = document.createElement('div');
-    newMovieDescriptionContainer.className = 'movie-description';
-
     //Movie title
     const newMovieTitle = document.createElement('h2');
     newMovieTitle.textContent = document.querySelector('#movie-name').value;
-    document.querySelector('#movie-name').value = '';
 
     //Movie genre
     const newMovieGenre = document.createElement('div');
     newMovieGenre.classList = 'movie-genre';
     newMovieGenre.textContent = document.querySelector('#movie-genre').value;
-    document.querySelector('#movie-genre').value = 'None';
 
     //Movie rating
     const newMovieRating = document.createElement('div');
     newMovieRating.className = 'movie-rating';
     newMovieRating.innerHTML = changeMovieRating();
-    document.querySelector('#movie-rating').value = 'None';
 
     //Movie description
     const newMovieDescription = document.createElement('p');
     newMovieDescription.textContent = document.querySelector('#movie-description').value;
-    document.querySelector('#movie-description').value = '';
-    
+
+    //Validation in the add movie form
+    if(validation(document.querySelector('#movie-name'), document.querySelector('#movie-genre'), document.querySelector('#movie-rating'), document.querySelector('#movie-description'))) {
+        movieModal.style.display = 'block';
+        return;
+    }
+
     //Append the description information inside the container
     newMovieDescriptionContainer.appendChild(newMovieTitle);
     newMovieDescriptionContainer.appendChild(newMovieGenre);
@@ -57,6 +59,10 @@ const addMovie = () => {
 
     //Add the movie list into the container
     movieList.appendChild(newMovieItem);
+
+    //Close modal as the item is listed
+    movieModal.style.display = 'none';
+    clearFormat(document.querySelector('#movie-name'), document.querySelector('#movie-genre'), document.querySelector('#movie-rating'), document.querySelector('#movie-description'));
 }
 
 //Change the logo of movie according to genre
@@ -92,6 +98,64 @@ const changeMovieRating = () => {
     return starRatings;
 }
 
+//Validation of forms
+const validation = (title, genre, rating, description) => {
+    let hasErrors = false; 
+    //Naming validation
+    if(title.value === undefined || title.value === '') {
+        title.style.borderColor = 'red';
+        hasErrors = true;
+    }
+    else {
+        title.style.borderColor = 'white';
+    }
+
+    //Genre validation
+    if(genre.options[genre.selectedIndex].value === 'None') {
+        genre.style.borderColor = 'red';
+        hasErrors = true;
+    }
+    else {
+        genre.style.borderColor = 'white';
+    }
+
+    //Rating validation
+    if(rating.options[rating.selectedIndex].value === 'None') {
+        rating.style.borderColor = 'red';
+        hasErrors = true;
+    }
+    else {
+        rating.style.borderColor = 'white';
+    }
+
+    //Description validation
+    if(description.value === undefined || description.value === '') {
+        description.style.borderColor = 'red';
+        hasErrors = true;
+    }
+    else {
+        description.style.borderColor = 'white';
+    }
+
+    //Return if it has errors
+    return hasErrors;
+}
+
+//Clear error formatting as the movie item is sent
+const clearFormat = (title, genre, rating, description) => {
+    //Default border colors
+    title.style.borderColor = 'white';
+    genre.style.borderColor = 'white';
+    rating.style.borderColor = 'white';
+    description.style.borderColor = 'white';
+
+    //Clear all values
+    title.value = '';
+    genre.value = 'None';
+    rating.value = 'None';
+    description.value = '';
+}
+
 //Navigation bar setting to active whenever clicked
 navigationBar.forEach(navigation => {
     navigation.addEventListener('click', e => {
@@ -113,8 +177,7 @@ closeMovieModal.addEventListener('click', () => {
 
 //Add movie modal submit button
 addMovieToList.addEventListener('click', e => {
-    addMovie();
-    movieModal.style.display = 'none';
+    addMovie(); //Add movies
 });
 
 //Selecting genre and changing its logo in modal 
