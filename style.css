@@ -111,6 +111,7 @@ li:hover {
 
 .movie-list__add-movie {
     grid-column: 1/3;
+    height: 50px;
     padding: 10px;
     margin: 10px 10px 0 10px;
     text-align: center;
@@ -127,6 +128,17 @@ li:hover {
 .movie-list__add-movie:hover {
     background-color: var(--red);
     border: 1px solid var(--red);
+}
+
+.movie-list__empty-item {
+    display: block;
+    color: gray;
+    font-size: 20px;
+    width: 1210px;
+    height: 250px;
+    margin: 10px;
+    padding-top: 20px;
+    text-align: center;
 }
 
 .movie-list__movie-item {

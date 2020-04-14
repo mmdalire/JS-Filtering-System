@@ -8,6 +8,9 @@ const addMovieToList = document.querySelector('#add-movie');
 const movieList = document.querySelector('.movie-system__movie-list');
 const selectGenre = document.querySelector('#movie-genre');
 
+//Removing the empty message display
+const emptyMessage = document.querySelector('.movie-list__empty-item');
+
 //Add movie into the list
 const addMovie = () => {
     //Create a new item
@@ -156,9 +159,39 @@ const clearFormat = (title, genre, rating, description) => {
     description.value = '';
 }
 
+//Filter out all movies by genre
+const filterMovies = chosenGenre => {
+    const movieItem = Array.from(document.querySelectorAll('.movie-list__movie-item'));
+    let selectedGenre = [];
+
+    movieItem.forEach(movie => movie.style.display = 'flex');
+    switch(chosenGenre) {
+        case 'Action':
+            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Action');
+            break;
+        case 'Comedy':
+            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Comedy');
+            break;
+        case 'Drama':
+            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Drama');
+            break;
+        case 'Horror':
+            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Horror');
+            break;
+        case 'Romance':
+            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Romance');
+            break;
+        default:
+            break;
+    }
+
+    selectedGenre.forEach(movie => movie.style.display = 'none');
+}
+
 //Navigation bar setting to active whenever clicked
 navigationBar.forEach(navigation => {
     navigation.addEventListener('click', e => {
+        filterMovies(navigation.textContent);
         const active = document.querySelector('.active');
         active.classList.remove('active');
         navigation.classList.add('active');
@@ -191,5 +224,4 @@ window.addEventListener('click', e => {
     if(e.target === movieModal) { //If the user clicks outside the modal content
         movieModal.style.display = 'none';
     }
-})
-
+});
