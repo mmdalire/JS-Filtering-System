@@ -2,12 +2,11 @@ const navigationBar = document.querySelectorAll('[data-nav-list]');
 const addMovieButton = document.querySelector('.movie-list__add-movie');
 const movieModal = document.querySelector('.movie__modal-box');
 const closeMovieModal = document.querySelector('.close');
-
 //Adding movie into the list
 const addMovieToList = document.querySelector('#add-movie');
 const movieList = document.querySelector('.movie-system__movie-list');
 const selectGenre = document.querySelector('#movie-genre');
-
+const genreLogo = document.querySelector('.add-movie__genre-image');
 //Removing the empty message display
 const emptyMessage = document.querySelector('.movie-list__empty-item');
 
@@ -20,6 +19,16 @@ const addMovie = () => {
     //Place of movie description container
     const newMovieDescriptionContainer = document.createElement('div');
     newMovieDescriptionContainer.className = 'movie-description';
+
+    //Place of trash bin for delete
+    const trashBin = document.createElement('div');
+    trashBin.className = 'trash-icon';
+    trashBin.innerHTML = '<i class="fas fa-trash-alt fa-2x"></i>';
+    trashBin.addEventListener('click', () => {
+       movieList.removeChild(newMovieItem);
+       //Display empty message
+       displayEmptyMessage();
+    }); 
 
     //Place of logo
     const newMovieLogo = document.createElement('div');
@@ -45,7 +54,12 @@ const addMovie = () => {
     newMovieDescription.textContent = document.querySelector('#movie-description').value;
 
     //Validation in the add movie form
-    if(validation(document.querySelector('#movie-name'), document.querySelector('#movie-genre'), document.querySelector('#movie-rating'), document.querySelector('#movie-description'))) {
+    if(validation(
+        document.querySelector('#movie-name'), 
+        document.querySelector('#movie-genre'), 
+        document.querySelector('#movie-rating'), 
+        document.querySelector('#movie-description')
+    )) {
         movieModal.style.display = 'block';
         return;
     }
@@ -57,6 +71,7 @@ const addMovie = () => {
     newMovieDescriptionContainer.appendChild(newMovieDescription);
 
     //Append the container
+    newMovieItem.appendChild(trashBin);
     newMovieItem.appendChild(newMovieLogo);
     newMovieItem.appendChild(newMovieDescriptionContainer)
 
@@ -65,7 +80,14 @@ const addMovie = () => {
 
     //Close modal as the item is listed
     movieModal.style.display = 'none';
-    clearFormat(document.querySelector('#movie-name'), document.querySelector('#movie-genre'), document.querySelector('#movie-rating'), document.querySelector('#movie-description'));
+    clearFormat(document.querySelector('#movie-name'), 
+        document.querySelector('#movie-genre'), 
+        document.querySelector('#movie-rating'), 
+        document.querySelector('#movie-description')
+    );
+
+    //Remove empty message
+    displayEmptyMessage();
 }
 
 //Change the logo of movie according to genre
@@ -146,6 +168,9 @@ const validation = (title, genre, rating, description) => {
 
 //Clear error formatting as the movie item is sent
 const clearFormat = (title, genre, rating, description) => {
+    //Remove image 
+    genreLogo.innerHTML ='';
+
     //Default border colors
     title.style.borderColor = 'white';
     genre.style.borderColor = 'white';
@@ -159,6 +184,10 @@ const clearFormat = (title, genre, rating, description) => {
     description.value = '';
 }
 
+//Whether to display the empty message or not depending on the number of movies
+const displayEmptyMessage = () => movieList.childElementCount <= 2 ? emptyMessage.style.display = 'block' : emptyMessage.style.display = 'none';
+
+
 //Filter out all movies by genre
 const filterMovies = chosenGenre => {
     const movieItem = Array.from(document.querySelectorAll('.movie-list__movie-item'));
@@ -167,19 +196,19 @@ const filterMovies = chosenGenre => {
     movieItem.forEach(movie => movie.style.display = 'flex');
     switch(chosenGenre) {
         case 'Action':
-            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Action');
+            selectedGenre = movieItem.filter(movie => movie.children[2].children[1].textContent !== 'Action');
             break;
         case 'Comedy':
-            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Comedy');
+            selectedGenre = movieItem.filter(movie => movie.children[2].children[1].textContent !== 'Comedy');
             break;
         case 'Drama':
-            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Drama');
+            selectedGenre = movieItem.filter(movie => movie.children[2].children[1].textContent !== 'Drama');
             break;
         case 'Horror':
-            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Horror');
+            selectedGenre = movieItem.filter(movie => movie.children[2].children[1].textContent !== 'Horror');
             break;
         case 'Romance':
-            selectedGenre = movieItem.filter(movie => movie.children[1].children[1].textContent !== 'Romance');
+            selectedGenre = movieItem.filter(movie => movie.children[2].children[1].textContent !== 'Romance');
             break;
         default:
             break;
@@ -209,15 +238,11 @@ closeMovieModal.addEventListener('click', () => {
 
 //Add movie modal submit button
 addMovieToList.addEventListener('click', e => {
-    if(movieList.childElementCount < 4) {
-        emptyMessage.style.display = 'none';
-    }
     addMovie(); //Add movies
 });
 
 //Selecting genre and changing its logo in modal 
 selectGenre.addEventListener('change', e => {
-    const genreLogo = document.querySelector('.add-movie__genre-image');
     genreLogo.innerHTML = changeMovieLogo();
 });
 

@@ -149,6 +149,11 @@ li:hover {
     padding: 10px;
     border: 2px solid var(--white);
     overflow: hidden;
+    transition: 0.5s all;
+}
+
+.movie-list__movie-item:hover {
+    border-color: var(--red);
 }
 
 .movie-logo {
@@ -247,6 +252,15 @@ textarea {
 
 option {
     background-color: var(--black);
+}
+
+.trash-icon {
+    cursor: pointer;
+    transition: 0.5s all;
+}
+
+.trash-icon:hover {
+    color: var(--red);
 }
 
 #add-movie {
