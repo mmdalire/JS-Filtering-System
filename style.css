@@ -50,11 +50,11 @@ p {
 }
 
 .container {
-    width: 90%;
+    width: 1300px;
     height: 500px;
     background-color: rgb(210, 210, 210);
     box-shadow: 15px 13px 5px 0px rgba(71, 71, 71, 0.75); 
-    margin: 0 auto;
+    margin: 0 20px;
     padding: 10px 10px 20px 10px;
 }
 
@@ -107,6 +107,7 @@ li:hover {
     overflow: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    min-width: 0;
 }
 
 .movie-list__add-movie {
@@ -132,9 +133,9 @@ li:hover {
 
 .movie-list__empty-item {
     display: block;
+    grid-column: 1/3;
     color: gray;
     font-size: 20px;
-    width: 1210px;
     height: 250px;
     margin: 10px;
     padding-top: 20px;

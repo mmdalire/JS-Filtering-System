@@ -184,7 +184,6 @@ const filterMovies = chosenGenre => {
         default:
             break;
     }
-
     selectedGenre.forEach(movie => movie.style.display = 'none');
 }
 
@@ -210,6 +209,9 @@ closeMovieModal.addEventListener('click', () => {
 
 //Add movie modal submit button
 addMovieToList.addEventListener('click', e => {
+    if(movieList.childElementCount < 4) {
+        emptyMessage.style.display = 'none';
+    }
     addMovie(); //Add movies
 });
 
